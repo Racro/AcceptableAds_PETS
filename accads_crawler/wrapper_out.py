@@ -96,7 +96,8 @@ if args.auth == 0:
     for url in urls:
         # Create multiprocessing processes
         processes = []
-        image_name = "accads"
+        # image_name = "accads"
+        image_name = "racro/accads:1.0.0"
         p1 = multiprocessing.Process(target=handle_container, args=(containers[0], image_name, url, 'control'))
         p2 = multiprocessing.Process(target=handle_container, args=(containers[1], image_name, url, 'adblock'))
         
