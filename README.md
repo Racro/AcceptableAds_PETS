@@ -21,6 +21,10 @@ This repository contains the code and analysis for our research on acceptable ad
 
 Please refer to the README files in each subdirectory for specific instructions on using the tools and scripts.
 
+## Dataset access
+The complete dataset is available [here](https://drive.google.com/drive/folders/17fEI8vLrsrVImDq9DCrqu6ssugRyRaQo?usp=sharing). 
+It contains `merged_ground_truth.csv` that contains the ground truth annotations. Each folder contains approximately 150 ad images that were extracted in that particular configuration.
+
 ### Reference
 ```
 @inproceedings {,

@@ -1,6 +1,6 @@
 # Sample Data
 
-This directory contains sample data for testing and demonstration purposes. The complete dataset is available upon request. Please refer to the [main README](../README.md) for data access instructions.
+This directory contains sample data for testing and demonstration purposes. Please refer to the [main README](../README.md) for data access instructions.
 
 ## Contents
 

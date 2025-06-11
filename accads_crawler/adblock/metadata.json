@@ -1,0 +1,27 @@
+{
+  "startTime": 1749620455062,
+  "endTime": 1749620476189,
+  "result": "success",
+  "stats": {
+    "urls": 1,
+    "skipped": 0,
+    "successes": 0,
+    "failures": 1
+  },
+  "config": {
+    "dataCollectors": [
+      "requests",
+      "cookies",
+      "ads",
+      "screenshots",
+      "cmps",
+      "videos"
+    ]
+  },
+  "environment": {
+    "projectVersion": "1.0.0",
+    "hostname": "1c0c05bc6d3c",
+    "cpus": 32,
+    "username": "chromiumuser"
+  }
+}

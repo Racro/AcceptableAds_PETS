@@ -1,0 +1,7 @@
+Number of crawlers: 1
+
+Processing entry #1 (http://www.religionnews.com/category/opinion/columns/islam-beyond-phobia-omar-suleiman/) Hash: www.religionnews.com_7bb6.
+Error: ENOENT: no such file or directory, open './adblock/extension_verification.jpg'
+Max number of retries (2) exceeded for "http://www.religionnews.com/category/opinion/columns/islam-beyond-phobia-omar-suleiman/" with err: Error: ENOENT: no such file or directory, open './adblock/extension_verification.jpg'
+
+✅ Finished successfully.

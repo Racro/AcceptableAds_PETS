@@ -37,9 +37,14 @@ We plan to provide the data on request to research labs who could benefit from t
 ```sh
 python3 wrapper_out.py --auth 0
 ```
-`Note:` On some systems, the `npm i` command hangs within the the docker when executed from outside. A hack for it is to attach to the docker manually using `docker attach accads_control` and then execute `cd accads_crawler && npm i` until the command finishes. Later we can detach and run the wrapper_out command as is.
+`Note:` On some systems, the `npm i` command hangs within the the docker when executed from outside (Error shown ). A hack for it is to start the docker `docker run -it -name accads_control accads` and then execute `cd accads_crawler && npm i` until the command finishes. Later we can detach and run the wrapper_out.py command as is.
 
-To avoid the inconvenience, you can also use the already build docker image which can be setup with the following command and then 
+To avoid the inconvenience, you can also use the already build docker image which can be setup with the below commands and then run the above wrapper_out.py script.
+In wrapper_out.py, comment line 99 and uncomment line 100 (to set `image_name` variable) 
+
+```sh
+docker pull racro/accads:latest
+```
 
 ### Authenticated Crawls
 On each of the VMs (we used machines with different IPs), we run control and adblock separately i.e. one VM runs `control` and the other runs `adblock`. 
