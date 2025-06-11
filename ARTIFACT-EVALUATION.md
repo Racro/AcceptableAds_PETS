@@ -36,8 +36,8 @@ Every folder is provided with a requirements.txt which could be loaded in a pyth
 
 ### Accessibility (All badges)
 The artifact is hosted on a public [GitHub repository](https://github.com/Racro/AcceptableAds_PETS). 
-The master branch would contain the most updated version. The current commit-id is 
-The dataset is available at 
+The master branch would contain the most updated version. The current commit-id is 8de8d47147f9a1f572330b369513f8ea18baefc2
+The dataset is available [here](https://drive.google.com/drive/folders/17fEI8vLrsrVImDq9DCrqu6ssugRyRaQo?usp=drive_link)
 
 ### Set up the environment (Only for Functional and Reproduced badges)
 
