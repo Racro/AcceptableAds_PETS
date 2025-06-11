@@ -24,7 +24,7 @@ Please refer to the README files in each subdirectory for specific instructions 
 ### Reference
 ```
 @inproceedings {,
-    author = {Roongta Ritik and Julia Jose and Hussam Habib and Rachel Greenstadt},
+    author = {Ritik Roongta and Julia Jose and Hussam Habib and Rachel Greenstadt},
     journal = {Proceedings on Privacy Enhancing Technologies},
     title = {{[Sheep's clothing, wolfish impact: Automated detection and evaluation of problematic 'allowed' advertisements](https://racro.github.io/papers/Accads_PETS.pdf)}},
     url = {https://racro.github.io/papers/Accads_PETS.pdf},

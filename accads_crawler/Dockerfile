@@ -20,12 +20,13 @@ COPY docker_in.py /home/chromiumuser/docker_in.py
 RUN git clone https://github.com/Racro/AcceptableAds_PETS.git
 # RUN git clone https://github.com/Racro/accads_crawler.git
 
+WORKDIR /home/chromiumuser/AcceptableAds_PETS/accads_crawler
+
 # Install the chrome 97
-RUN wget -q 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F978038%2Fchrome-linux.zip?generation=1646544045015587&alt=media' -O /home/chromiumuser/accads_crawler/chrome_97.zip && unzip /home/chromiumuser/accads_crawler/chrome_97.zip -d /home/chromiumuser/accads_crawler/
+RUN wget -q 'https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F978038%2Fchrome-linux.zip?generation=1646544045015587&alt=media' -O ./chrome_97.zip && unzip ./chrome_97.zip -d ./
 
 # Install puppeteer
-# RUN cd AcceptableAds_PETS/accads_crawler && npm i --verbose
-# RUN cd accads_crawler && npm i --verbose
+RUN npm i --verbose
 
 # Set the entrypoint to start Chromium
 # ENTRYPOINT ["npm", "run", "crawl", "--", "-u", "", "-o", "./control", "-v", "-f", "-d", "ads", "--reporters", "cli,file", "-l", "./control/", "--autoconsent-action", "optIn"]
