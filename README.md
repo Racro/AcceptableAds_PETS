@@ -19,7 +19,105 @@ This repository contains the code and analysis for our research on acceptable ad
 
 ## Getting Started
 
-Please refer to the README files in each subdirectory for specific instructions on using the tools and scripts.
+### Unauthenticated Crawls (Docker)
+
+1. **Setup Environment**
+   ```bash
+   # Copy environment file
+   cp env.example .env
+   
+   # Edit configuration as needed
+   nano .env
+   ```
+
+2. **Create Required Directories**
+   ```bash
+   mkdir -p data/control data/adblock data/shared logs
+   ```
+
+3. **Start Services**
+   ```bash
+   # Start all services
+   docker-compose up -d
+   
+   # View logs
+   docker-compose logs -f
+   
+   # Stop services
+   docker-compose down
+   ```
+
+4. **Run Crawls**
+   ```bash
+   # Run control crawl (without ad blocking)
+   python3 run_crawl_docker.py --extn control --num-urls 10
+   
+   # Run adblock crawl (with ad blocking)
+   python3 run_crawl_docker.py --extn adblock --num-urls 10
+   ```
+
+5. **Process Ad Images**
+   ```bash
+   # Run processing manually
+   docker exec accads-processing python3 process_images.py
+   
+   # View processing logs
+   docker exec accads-processing tail -f /app/logs/processing.log
+   ```
+
+6. **LLM Annotation**
+   ```bash
+   # Run LLM annotation with OpenAI API
+   python3 processing_scripts/llm_annotation.py --openai_key YOUR_OPENAI_KEY
+   ```
+
+### Authenticated Crawls
+
+For authenticated crawls, you need to create authenticated browser profiles by logging in with Gmail credentials. This process requires manual login via a GUI browser session. The authenticated profiles are then used for crawling. Typically, you run the `control` and `adblock` crawls on separate VMs (each with a different IP address).
+
+#### Step 0: Initial Setup
+
+1. Clone this repo:
+   ```sh
+   git clone https://github.com/Racro/AcceptableAds_PETS.git
+   cd accads_crawler
+   ```
+
+2. Install the required npm packages:
+   ```sh
+   npm i
+   ```
+
+#### Step 1: Prepare Authenticated Profiles
+
+1. Edit `accads_crawler/crawlConductor.js`:
+   - Comment out **Line 7** and uncomment **Line 8** to use `crawler_auth.js` instead of `crawler.js`.
+2. Start the container (with GUI access) and run:
+   ```sh
+   python3 wrapper_out.py --auth 1 --extn control  # or --extn adblock
+   ```
+3. When the browser opens, log in to your Gmail account manually. Once logged in, close the browser and stop the process.
+
+#### Step 2: Revert Edits for Crawling
+
+1. In `accads_crawler/crawlConductor.js`, revert the changes:
+   - Uncomment **Line 7** and comment **Line 8** to use `crawler.js`.
+2. In `accads_crawler/crawler.js`, uncomment **Line 69** and **Line 84** to enable the use of the `temp_session` containing the authenticated profiles.
+
+#### Step 3: Run Authenticated Crawls
+
+- On VM-1 (for control):
+  ```sh
+  python3 wrapper_out.py --auth 1 --extn control
+  ```
+- On VM-2 (for adblock):
+  ```sh
+  python3 wrapper_out.py --auth 1 --extn adblock
+  ```
+
+**Note:**
+- Ensure you have GUI access for the authentication step.
+- Each VM should run only one extension type (`control` or `adblock`).
 
 ## Dataset access
 The complete dataset is available [here](https://drive.google.com/drive/folders/17fEI8vLrsrVImDq9DCrqu6ssugRyRaQo?usp=sharing). 

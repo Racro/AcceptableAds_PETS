@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  # Development overrides for crawler services
+  crawler-control:
+    environment:
+      - NODE_ENV=development
+      - DEBUG=true
+    volumes:
+      - ./logs:/app/logs
+
+  crawler-adblock:
+    environment:
+      - NODE_ENV=development
+      - DEBUG=true
+    volumes:
+      - ./logs:/app/logs
+
+  # Development overrides for processing service
+  processing:
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./logs:/app/logs 

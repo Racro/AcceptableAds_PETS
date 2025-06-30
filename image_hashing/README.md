@@ -1,44 +1,50 @@
 # Image Hashing and Analysis
 
-This directory contains tools for image analysis, hashing, and deduplication of ad images.
+This directory contains tools for image analysis, hashing, deduplication, and OCR extraction for ad images collected during the crawling process.
 
-## Tools Overview
+## Overview
 
-- `cleaning.py`: Image cleaning and preprocessing utilities
-- `deduplicate.py`: Image deduplication using perceptual hashing
-- `faiss_compare.py`: Fast similarity search using FAISS
-- `faiss_vector_gen.py`: Generate FAISS vectors for image comparison
-- `ocr.py`: Optical Character Recognition for ad text extraction
-- `detect_white.py`: Detection of white/blank images
+The image hashing tools provide image processing capabilities including OCR text extraction, deduplication, and similarity analysis for the collected ad images.
+
+## Key Tools
+
+- **OCR Processing**: `ocr.py` extracts text from ad images using optical character recognition
+- **Deduplication**: `deduplicate.py` removes duplicate images using perceptual hashing
+- **Similarity Search**: `faiss_compare.py` and `faiss_vector_gen.py` provide fast similarity search using FAISS
+- **Image Cleaning**: `cleaning.py` and `detect_white.py` handle image preprocessing and blank image detection
 
 ## Features
 
-- Perceptual image hashing
-- Fast similarity search using FAISS
-- OCR for text extraction
-- Image deduplication
-- White/blank image detection
+- Perceptual image hashing for duplicate detection
+- Fast similarity search using FAISS indexing
+- OCR text extraction with JSON output format
+- Image preprocessing and cleaning utilities
+- White/blank image detection and filtering
+
+## Integration
+
+- **OCR Extraction**: Automatically performed by the processing service during the Docker workflow
+- **Output Files**: OCR results saved as `ocr_control.json` and `ocr_adblock.json` for use in LLM annotation
+- **Pipeline Integration**: Used by both the processing service and annotation scripts
 
 ## Usage
 
-1. Install dependencies:
 ```bash
-python3.10 -m venv dedup
-pip install -r requirements.txt
-pip install \
-  --index-url https://download.pytorch.org/whl/cpu \
-  torch==2.4.1+cpu torchvision==0.19.1+cpu torchaudio==2.4.1+cpu
-```
+# Run image deduplication
+python3 deduplicate.py
 
-2. Run deduplication script:
-```bash
-python deduplicate.py
+# Generate FAISS vectors for similarity search
+python3 faiss_vector_gen.py
+
+# Compare images using FAISS
+python3 faiss_compare.py
 ```
 
 ## Output
 
-The tools generate:
+- OCR JSON files for each crawl mode (control/adblock)
 - Deduplicated image sets
-- Image similarity scores
-- Extracted text from images
+- Image similarity scores and analysis
 - FAISS index files for fast similarity search
+
+For detailed crawling and processing instructions, see the main [README.md](../README.md).
