@@ -11,12 +11,6 @@ This repository contains a web crawler implementation for collecting and analyzi
 - CMP (Consent Management Platform) interaction
 - Screenshot capture
 
-## Implementation Details
-
-
-### Data release
-We plan to provide the data on request to research labs who could benefit from the high quality labelled dataset. Please send a request email to ritik.r@nyu.edu with the subject `AccAds Dataset Request`. 
-
 ## Installation
 
 1. Clone this repo:
@@ -34,41 +28,95 @@ We plan to provide the data on request to research labs who could benefit from t
 
 ### Unauthenticated Crawl
 
-```sh
-python3 wrapper_out.py --auth 0
-```
-`Note:` On some systems, the `npm i` command hangs within the the docker when executed from outside (Error shown ). A hack for it is to start the docker `docker run -it -name accads_control accads` and then execute `cd accads_crawler && npm i` until the command finishes. Later we can detach and run the wrapper_out.py command as is.
+By default, the crawler is designed to run inside a Docker container for ease of setup and reproducibility. If you want to use the pre-built Docker image, you can simply pull and run it as shown below. Alternatively, if you prefer to set up your own Docker environment, you can do so using the provided Docker commands.
 
-To avoid the inconvenience, you can also use the already build docker image which can be setup with the below commands and then run the above wrapper_out.py script.
-In wrapper_out.py, comment line 99 and uncomment line 100 (to set `image_name` variable) 
+**Option 1: Using the Pre-built Docker Image**
 
-```sh
-docker pull racro/accads:latest
-```
+1. Pull the latest Docker image:
+    ```sh
+    docker pull racro/accads:latest
+    ```
+
+2. Run the container and start the crawl:
+    ```sh
+    python3 wrapper_out.py --auth 0
+    ```
+
+**Option 2: Setting Up Your Own Docker Environment**
+
+If you want to build and run the Docker container yourself:
+
+1. Build the Docker image:
+    ```sh
+    docker build -t accads .
+    ```
+
+2. Run the container:
+    ```sh
+    docker run -it --name accads_control accads
+    cd accads_crawler
+    npm i
+    python3 wrapper_out.py --auth 0
+    ```
+
+**Note:**  
+On some systems, the `npm i` command may hang when executed from outside the Docker container. If this happens, run `npm i` from inside the container as shown above.
 
 ### Authenticated Crawls
-On each of the VMs (we used machines with different IPs), we run control and adblock separately i.e. one VM runs `control` and the other runs `adblock`. 
-VM-1
-```sh
-python3 wrapper_out.py --auth 1 --extn control ## For control
-```
-VM-2
-```sh
-python3 wrapper_out.py --auth 1 --extn adblock ## For control
-```
 
-In order to run the authenticated crawls, we first need to create authenticated profiles. This would need the reviewer to login through Gmail Email and Password. After making the following edits, the browser would open up in GUI mode where the reviewer would need to manually log into their gmail accounts and then close the browser and end the process.
-They need to then revert the steps in order to now run the crawls with the authenticated profile.
+For authenticated crawls, you need to create authenticated browser profiles by logging in with Gmail credentials. This process requires manual login via a GUI browser session. The authenticated profiles are then used for crawling. Typically, you run the `control` and `adblock` crawls on separate VMs (each with a different IP address).
 
-Edits
-- In `crawlConductor.js`, comment `Line 7` and uncomment `Line 8` to use `crawler_auth.js`. Now run the wrapper_out.py commands above. Ensure that you run it on a platform where you have GUI access in order to login.
+**Step 1: Prepare Authenticated Profiles**
 
-Revert
-- In `crawlConductor.js`, uncomment `Line 7` and comment `Line 8` to use `crawler.js`.
-- In `crawler.js`, uncomment `Line 69` and `Line 84` in order to use the temp_session which should contain the authenticated profiles for the crawl.
+1. Edit `crawlConductor.js`:
+    - Comment out **Line 7** and uncomment **Line 8** to use `crawler_auth.js` instead of `crawler.js`.
+2. Start the container (with GUI access) and run:
+    ```sh
+    python3 wrapper_out.py --auth 1 --extn control  # or --extn adblock
+    ```
+3. When the browser opens, log in to your Gmail account manually. Once logged in, close the browser and stop the process.
+
+**Step 2: Revert Edits for Crawling**
+
+1. In `crawlConductor.js`, revert the changes:
+    - Uncomment **Line 7** and comment **Line 8** to use `crawler.js`.
+2. In `crawler.js`, uncomment **Line 69** and **Line 84** to enable the use of the `temp_session` containing the authenticated profiles.
+
+**Step 3: Run Authenticated Crawls**
+
+- On VM-1 (for control):
+    ```sh
+    python3 wrapper_out.py --auth 1 --extn control
+    ```
+- On VM-2 (for adblock):
+    ```sh
+    python3 wrapper_out.py --auth 1 --extn adblock
+    ```
+
+**Note:**
+- Ensure you have GUI access for the authentication step.
+- Each VM should run only one extension type (`control` or `adblock`).
 
 #### Webpage lists
 You can find all crawled URLs, including landing and inner page URLs in the [websites_inner_sites.txt]](https://github.com/Racro/AcceptableAds_PETS/accads_crawler/websites_inner_sites.txt).
+
+### Data Storage and Output Structure
+
+After running a crawl (either control or adblock), the collected data is stored in separate folders named `control` and `adblock`, corresponding to the type of crawl performed. Each of these folders contains various files and subdirectories with different types of information:
+
+- **PNG Images (outside subfolders):**
+  - These are page screenshots captured during the crawl. Each image corresponds to a specific page state or adshot.
+
+- **JSON Files (outside subfolders):**
+  - These files contain network information, such as requests and responses observed during the crawl session.
+
+- **adData/ Directory:**
+  - Contains JSON files with detailed network information specifically about ads detected on the crawled pages.
+
+- **adshots/ Directory:**
+  - Stores images (typically PNGs) of detected ads (adshots) that were found on the pages during the crawl.
+
+The same structure is present in both the `control` and `adblock` folders, allowing you to compare results between the two modes easily.
 
 ## Directory Structure
 

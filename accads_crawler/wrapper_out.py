@@ -79,7 +79,8 @@ def handle_container(container_name, image_name, url, extn):
     time.sleep(1)  # Add delay if necessary
 
 # List of URLs to be crawled
-urls = open('websites_inner_sites.txt', 'r').read().splitlines()
+# urls = open('websites_inner_sites.txt', 'r').read().splitlines() ## For crawling inner sites
+urls = open('websites_1500.txt', 'r').read().splitlines() ## For crawling 1500 websites
 parser = argparse.ArgumentParser(description='Specify Extension (control/adblock) and Auth mode (0/1) for wrapper_out.py')
 parser.add_argument('--extn', type=str, default='control')
 parser.add_argument('--auth', type=int, default=0)
@@ -92,12 +93,13 @@ if args.auth == 0:
     containers = ["accads_control", "accads_adblock"]
 
     # Build Docker images (assuming Dockerfiles are in the current directory)
-    subprocess.run(["docker", "build", "-t", "accads", "-f", "Dockerfile", "."])
+    # subprocess.run(["docker", "build", "-t", "accads", "-f", "Dockerfile", "."]) ## For building docker manually
+    
     for url in urls:
         # Create multiprocessing processes
         processes = []
-        image_name = "accads"
-        # image_name = "racro/accads:latest"
+        # image_name = "accads" ## For building docker manually
+        image_name = "racro/accads:latest" ## For pulling docker image from docker hub
         p1 = multiprocessing.Process(target=handle_container, args=(containers[0], image_name, url, 'control'))
         p2 = multiprocessing.Process(target=handle_container, args=(containers[1], image_name, url, 'adblock'))
         
