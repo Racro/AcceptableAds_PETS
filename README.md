@@ -120,7 +120,7 @@ It contains `merged_ground_truth.csv` that contains the ground truth annotations
 
 ### Reference
 ```
-@inproceedings {,
+@inproceedings {Roongta2025,
     author = {Ritik Roongta and Julia Jose and Hussam Habib and Rachel Greenstadt},
     journal = {Proceedings on Privacy Enhancing Technologies},
     title = {{[Sheep's clothing, wolfish impact: Automated detection and evaluation of problematic 'allowed' advertisements](https://racro.github.io/papers/Accads_PETS.pdf)}},
