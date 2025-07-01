@@ -26,11 +26,29 @@ import sys
 import re
 import time
 import glob
+import argparse
+
+def get_api_key():
+    """Get OpenAI API key from environment variable or command line argument."""
+    parser = argparse.ArgumentParser(description='LLM annotation for ad analysis')
+    parser.add_argument('--openai_key', type=str, help='OpenAI API key')
+    parser.add_argument('--openai-key', type=str, help='OpenAI API key (alternative format)')
+    args, _ = parser.parse_known_args()
+    
+    # Try command line argument first
+    api_key = args.openai_key or args.openai_key
+    
+    # Fall back to environment variable
+    if not api_key:
+        api_key = os.getenv("OPENAI_KEY")
+    
+    if not api_key:
+        raise ValueError("OpenAI API key not found. Please provide it via --openai_key argument or set the OPENAI_KEY environment variable.")
+    
+    return api_key
 
 # Initialize OpenAI API with your key
-api_key = os.getenv("OPENAI_KEY")
-if not api_key:
-    raise ValueError("OpenAI API key not found. Please set the OPENAI_KEY environment variable.")
+api_key = get_api_key()
 
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
@@ -50,7 +68,7 @@ def get_ad_images():
     ad_images = []
     
     # Get adblock images
-    adblock_images = glob.glob('../data/adblock/adshots/*.png')
+    adblock_images = glob.glob('./data/adblock/adshots/*.png')
     for img_path in adblock_images:
         filename = os.path.basename(img_path)
         ad_images.append({
@@ -61,7 +79,7 @@ def get_ad_images():
         })
     
     # Get control images
-    control_images = glob.glob('../data/control/adshots/*.png')
+    control_images = glob.glob('./data/control/adshots/*.png')
     for img_path in control_images:
         filename = os.path.basename(img_path)
         ad_images.append({
@@ -245,7 +263,7 @@ for i, img_info in enumerate(ad_images):
         # Save progress after each image
         json.dump(all_annot, open('llm_annotation_dict_4o.json', 'w'))
         json.dump(explanations, open('llm_annotation_explanations_4o.json', 'w'))
-        
+
     except Exception as e:
         print(f'ERROR parsing result for {filename}:', e, res)
         all_annot[image_path] = res

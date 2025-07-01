@@ -17,20 +17,20 @@ sys.path.append('/app/image_hashing')
 
 # Import OCR with fallback for other modules
 try:
-    from ocr import detect_text
+    from image_hashing.ocr import detect_text
 except ImportError as e:
     logging.error(f"Could not import OCR module: {e}")
     detect_text = None
 
 # Try to import other modules, but don't fail if they're missing
 try:
-    from deduplicate import deduplicate_images
+    from image_hashing.deduplicate import deduplicate_images
 except ImportError:
     deduplicate_images = None
     logging.warning("Deduplication module not available")
 
 try:
-    from detect_white import detect_white_images
+    from image_hashing.detect_white import detect_white_images
 except ImportError:
     detect_white_images = None
     logging.warning("White detection module not available")
@@ -141,29 +141,23 @@ def process_directory(directory_path, extension_type):
             logging.error(f"Error processing {image_path}: {e}")
 
 def main():
-    """Main processing function that runs continuously."""
-    logging.info("Starting image processing service...")
+    """Main processing function that runs once and exits."""
+    logging.info("Starting image processing (single run)...")
     
-    while True:
-        try:
-            # Process control directory
-            control_dir = "/app/data/control"
-            process_directory(control_dir, "control")
-            
-            # Process adblock directory
-            adblock_dir = "/app/data/adblock"
-            process_directory(adblock_dir, "adblock")
-            
-            logging.info("Processing cycle completed. Waiting 60 seconds before next cycle...")
-            time.sleep(60)  # Wait 60 seconds before next processing cycle
-            
-        except KeyboardInterrupt:
-            logging.info("Processing service stopped by user")
-            break
-        except Exception as e:
-            logging.error(f"Error in processing cycle: {e}")
-            logging.info("Waiting 30 seconds before retrying...")
-            time.sleep(30)
+    try:
+        # Process control directory
+        control_dir = "/app/data/control"
+        process_directory(control_dir, "control")
+        
+        # Process adblock directory
+        adblock_dir = "/app/data/adblock"
+        process_directory(adblock_dir, "adblock")
+        
+        logging.info("Processing completed successfully!")
+        
+    except Exception as e:
+        logging.error(f"Error in processing: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main() 

@@ -21,21 +21,16 @@ This repository contains the code and analysis for our research on acceptable ad
 
 ### Unauthenticated Crawls (Docker)
 
-1. **Setup Environment**
+1. **Initial Setup**
    ```bash
-   # Copy environment file
-   cp env.example .env
+   # Run the setup script (creates directories, copies env file)
+   ./setup_docker.sh
    
    # Edit configuration as needed
    nano .env
    ```
 
-2. **Create Required Directories**
-   ```bash
-   mkdir -p data/control data/adblock data/shared logs
-   ```
-
-3. **Start Services**
+2. **Start Services**
    ```bash
    # Start all services
    docker-compose up -d
@@ -47,7 +42,7 @@ This repository contains the code and analysis for our research on acceptable ad
    docker-compose down
    ```
 
-4. **Run Crawls**
+3. **Run Crawls**
    ```bash
    # Run control crawl (without ad blocking)
    python3 run_crawl_docker.py --extn control --num-urls 10
@@ -56,16 +51,16 @@ This repository contains the code and analysis for our research on acceptable ad
    python3 run_crawl_docker.py --extn adblock --num-urls 10
    ```
 
-5. **Process Ad Images**
+4. **Process Ad Images**
    ```bash
-   # Run processing manually
-   docker exec accads-processing python3 process_images.py
+   # Run processing when data is ready (runs once and exits)
+   python3 run_processing.py
    
    # View processing logs
-   docker exec accads-processing tail -f /app/logs/processing.log
+   tail -f logs/processing.log
    ```
 
-6. **LLM Annotation**
+5. **LLM Annotation**
    ```bash
    # Run LLM annotation with OpenAI API
    python3 processing_scripts/llm_annotation.py --openai_key YOUR_OPENAI_KEY

@@ -53,7 +53,6 @@ services:
       - ./logs:/app/logs
     environment:
       - PYTHONPATH=/app
-    restart: unless-stopped
     deploy:
       resources:
         limits:

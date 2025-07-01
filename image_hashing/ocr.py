@@ -49,7 +49,7 @@ def detect_text(path):
         ret = ''
         
         if texts == '':
-            return ret        
+            return ret    
         
         for text in texts:
             ret = ret + ' ' + text.description

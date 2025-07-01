@@ -48,7 +48,7 @@ def run_single_url_in_container(container_name, url, crawler_type):
     
     try:
         # Run with timeout
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)  # 5 minute timeout
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=180)  # 5 minute timeout
         
         if result.returncode == 0:
             print(f"✅ {crawler_type} crawl completed successfully!")
@@ -60,7 +60,7 @@ def run_single_url_in_container(container_name, url, crawler_type):
             return False
             
     except subprocess.TimeoutExpired:
-        print(f"⏰ {crawler_type} crawl timed out after 5 minutes")
+        print(f"⏰ {crawler_type} crawl timed out after 3 minutes")
         # Kill the process
         try:
             subprocess.run([
