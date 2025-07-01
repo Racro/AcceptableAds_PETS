@@ -261,8 +261,8 @@ for i, img_info in enumerate(ad_images):
         explanations[image_path] = res["explanations"]
         
         # Save progress after each image
-        json.dump(all_annot, open('llm_annotation_dict_4o.json', 'w'))
-        json.dump(explanations, open('llm_annotation_explanations_4o.json', 'w'))
+        json.dump(all_annot, open('/app/processing_scripts/llm_annotation_dict.json', 'w'))
+        json.dump(explanations, open('/app/processing_scripts/llm_annotation_explanations.json', 'w'))
 
     except Exception as e:
         print(f'ERROR parsing result for {filename}:', e, res)
@@ -288,10 +288,10 @@ for img_info in ad_images:
     })
 
 df = pd.DataFrame(results_data)
-df.to_csv('llm_annotation_4o.csv', index=False)
+df.to_csv('/app/processing_scripts/llm_annotation.csv', index=False)
 
 print(f"\nAnnotation complete! Processed {len(ad_images)} images.")
 print("Results saved to:")
-print("- llm_annotation_dict_4o.json")
-print("- llm_annotation_explanations_4o.json") 
-print("- llm_annotation_4o.csv")
+print("- llm_annotation_dict.json")
+print("- llm_annotation_explanations.json") 
+print("- llm_annotation.csv")

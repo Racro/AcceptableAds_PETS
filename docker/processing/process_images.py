@@ -106,39 +106,19 @@ def process_adshots_directory(directory_path, extension_type):
     return ocr_data
 
 def process_directory(directory_path, extension_type):
-    """Process all images in a directory (including adshots) and save OCR data."""
+    """Process only adshots directory and save OCR data."""
     if not os.path.exists(directory_path):
         logging.warning(f"Directory {directory_path} does not exist")
         return
     
     logging.info(f"Processing directory: {directory_path}")
     
-    # First process adshots specifically
+    # Process only adshots directory
     adshots_ocr_data = process_adshots_directory(directory_path, extension_type)
     
     # Save adshots OCR data
     if adshots_ocr_data:
         save_ocr_data(adshots_ocr_data, extension_type)
-    
-    # Then process any other PNG images in the directory
-    image_files = glob.glob(os.path.join(directory_path, "*.png"))
-    logging.info(f"Found {len(image_files)} additional images in {directory_path}")
-    
-    # Process each image
-    for image_path in image_files:
-        try:
-            logging.info(f"Processing: {os.path.basename(image_path)}")
-            
-            # Extract text using OCR if available
-            if detect_text:
-                text = detect_text(image_path)
-                if text:
-                    logging.info(f"Extracted text from {os.path.basename(image_path)}: {text[:100]}...")
-            else:
-                logging.warning("OCR not available, skipping text extraction")
-            
-        except Exception as e:
-            logging.error(f"Error processing {image_path}: {e}")
 
 def main():
     """Main processing function that runs once and exits."""

@@ -19,6 +19,14 @@ This repository contains the code and analysis for our research on acceptable ad
 
 ## Getting Started
 
+### Quick Start (Recommended Workflow)
+
+The project now uses wrapper scripts for easy execution:
+
+1. **Crawl Data**: `python3 run_crawl_docker.py --extn control --num-urls 10`
+2. **Process Images**: `python3 run_processing.py` 
+3. **LLM Annotation**: `python3 run_llm_annotation.py --openai_key YOUR_KEY`
+
 ### Unauthenticated Crawls (Docker)
 
 1. **Initial Setup**
@@ -59,12 +67,25 @@ This repository contains the code and analysis for our research on acceptable ad
    # View processing logs
    tail -f logs/processing.log
    ```
+   
+   **Output Files:**
+   - `image_hashing/ocr_control.json` - OCR text from control crawl images
+   - `image_hashing/ocr_adblock.json` - OCR text from adblock crawl images
 
 5. **LLM Annotation**
    ```bash
-   # Run LLM annotation with OpenAI API
-   python3 processing_scripts/llm_annotation.py --openai_key YOUR_OPENAI_KEY
+   # Run LLM annotation when OCR data is ready (runs in Docker)
+   python3 run_llm_annotation.py --openai_key YOUR_OPENAI_KEY
+   
+   # Or set environment variable
+   export OPENAI_KEY=YOUR_OPENAI_KEY
+   python3 run_llm_annotation.py
    ```
+   
+   **Output Files:**
+   - `processing_scripts/llm_annotation_dict.json` - LLM annotations for each image
+   - `processing_scripts/llm_annotation_explanations.json` - Explanations for annotations
+   - `processing_scripts/llm_annotation.csv` - Summary in CSV format
 
 ### Authenticated Crawls
 

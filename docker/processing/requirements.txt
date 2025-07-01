@@ -22,5 +22,8 @@ seaborn==0.12.2
 
 # Utilities
 tqdm==4.66.5
-requests==2.32.3
-python-dateutil==2.9.0.post0 
+requests>=2.31.0
+python-dateutil==2.9.0.post0
+
+# LLM dependencies
+openai>=1.50.0 
